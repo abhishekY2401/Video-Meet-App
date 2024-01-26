@@ -1,16 +1,17 @@
 import { Socket } from "socket.io";
 import http from "http";
-
+import { userRouter } from "./routes/users.router";
 import express from "express";
 import { Server } from "socket.io";
 import { UserManager } from "./managers/UserManager";
+import { connectToDatabase } from "./services/database.service";
 
 const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173/",
   },
 });
 
@@ -27,6 +28,10 @@ io.on("connection", (socket: Socket) => {
   });
 });
 
-server.listen(4000, () => {
-  console.log("listening on *:4000");
+app.use("/", userRouter);
+
+connectToDatabase().then(() => {
+  server.listen(4000, () => {
+    console.log("listening on *:4000");
+  });
 });
