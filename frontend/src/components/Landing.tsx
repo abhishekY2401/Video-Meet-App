@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { Room } from "./Room";
+import { Register } from "./Register";
 
 function Landing() {
   const [user, setUser] = useState(null);
+  const [login, setLogin] = useState(false);
   const [name, setName] = useState("");
-  const navigate = useNavigate();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [localAudioTrack, setLocalAudioTrack] =
@@ -43,29 +43,40 @@ function Landing() {
     if (videoRef && videoRef.current) {
       getCam();
     }
-    getCam();
   }, [videoRef]);
 
   if (!joined) {
     return (
-      <div>
-        <video autoPlay ref={videoRef}></video>
+      <div className="h-[100vh] flex flex-col justify-center items-center gap-8">
+        <video
+          autoPlay
+          width={600}
+          height={400}
+          style={{ borderRadius: "15px" }}
+          ref={videoRef}
+        ></video>
         <button
           onClick={() => {
             if (user === null) {
-              // setShowRegister(true);
-              navigate("/sign-up");
+              setLogin(!login);
+              console.log(login);
             } else {
               setJoined(true);
             }
           }}
+          className="select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          type="button"
+          data-dialog-target="sign-in-dialog"
         >
           {user !== null ? (
             <div>join the room</div>
           ) : (
-            <div>sign in / sign up to join the room</div>
+            <>
+              <div>sign in to join the room</div>
+            </>
           )}
         </button>
+        {login && <Register setLogin={setLogin} />}
       </div>
     );
   }

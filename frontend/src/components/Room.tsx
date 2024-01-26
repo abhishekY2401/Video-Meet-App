@@ -27,8 +27,8 @@ export const Room = ({
   const [remoteMediaStream, setRemoteMediaStream] =
     useState<MediaStream | null>(null);
 
-  const remoteVideoRef = useRef<HTMLVideoElement | undefined>();
-  const localVideoRef = useRef<HTMLVideoElement | undefined>();
+  const remoteVideoRef = useRef<HTMLVideoElement>();
+  const localVideoRef = useRef<HTMLVideoElement>();
 
   useEffect(() => {
     // logic to initialize user to the room
@@ -195,22 +195,24 @@ export const Room = ({
   return (
     <>
       <div>Hi {name}</div>
-      <video
-        autoPlay
-        width={600}
-        height={400}
-        ref={localVideoRef}
-        style={{ borderRadius: "20px" }}
-      />
-      {lobby ? "Waiting you to connect to someone" : ""}
+      <div className="flex gap-8">
+        <video
+          autoPlay
+          width={600}
+          height={400}
+          ref={localVideoRef}
+          style={{ borderRadius: "20px" }}
+        />
+        {lobby ? "Waiting you to connect to someone" : ""}
 
-      <video
-        autoPlay
-        width={600}
-        height={400}
-        ref={remoteVideoRef}
-        style={{ borderRadius: "20px" }}
-      />
+        <video
+          autoPlay
+          width={600}
+          height={400}
+          ref={remoteVideoRef}
+          style={{ borderRadius: "20px" }}
+        />
+      </div>
     </>
   );
 };
