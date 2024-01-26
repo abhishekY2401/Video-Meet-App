@@ -10,4 +10,5 @@ export default withMT({
     extend: {},
   },
   plugins: [],
-});
+})
+
